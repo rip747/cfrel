@@ -91,7 +91,8 @@
 			loc.from = instance.from("users");
 			loc.join = instance.join("posts", "post_user_id = user_id");
 			loc.group = instance.group("a");
-			loc.having = instance.having("a > ?", [0]);
+			loc.havingArgs = [0];
+			loc.having = instance.having("a > ?", loc.havingArgs);
 			loc.order = instance.order("a ASC");
 			loc.limit = instance.limit(5);
 			loc.offset = instance.offset(10);
@@ -119,7 +120,8 @@
 			loc.join = instance.join("posts", "post_user_id = user_id");
 			loc.where = instance.where(a=5);
 			loc.group = instance.group("a");
-			loc.having = instance.having("a > ?", [0]);
+			loc.havingArgs = [0];
+			loc.having = instance.having("a > ?", loc.havingArgs);
 			loc.order = instance.order("a ASC");
 			loc.limit = instance.limit(5);
 			loc.offset = instance.offset(10);
@@ -152,7 +154,8 @@
 			assertEquals("cfrel.nodes.Column", typeOf(loc.instance3.sql.select[1]));
 			assertEquals("cfrel.nodes.Column", typeOf(loc.instance3.sql.select[2]));
 			assertEquals("cfrel.nodes.Column", typeOf(loc.instance3.sql.select[3]));
-			assertEquals(["*"], visit(loc.instance1.sql.select));
+			loc.selectArgs = ["*"]; 
+			assertEquals(loc.selectArgs, visit(loc.instance1.sql.select));
 			assertEquals(loc.testVal, visit(loc.instance2.sql.select));
 			assertEquals(loc.testVal, visit(loc.instance3.sql.select));
 		</cfscript>
@@ -282,7 +285,8 @@
 			loc.pass = false;
 			loc.instance = new();
 			try {
-				loc.instance.where("id = ? OR name = '?'", [2]);
+				loc.whereArgs = [2];
+				loc.instance.where("id = ? OR name = '?'", loc.whereArgs);
 			} catch (custom_type e) {
 				loc.pass = true;
 			}
@@ -293,9 +297,12 @@
 	<cffunction name="testWhereWithNamedArguments" returntype="void" access="public">
 		<cfscript>
 			var loc = {};
-			loc.instance = new().where(a=45, b="BBB", c=[1,2,3]);
-			assertEquals(["a = ?", "b = ?", "c IN (?)"], visit(loc.instance.sql.wheres), "Named arguments should be in WHERE clause");
-			assertEquals([45, "BBB", [1,2,3]], loc.instance.sql.whereParameters, "Parameters should be set and in correct order");
+			loc.args = [1,2,3];
+			loc.instance = new().where(a=45, b="BBB", c=loc.args);
+			loc.ags = ["a = ?", "b = ?", "c IN (?)"];
+			assertEquals(loc.args, visit(loc.instance.sql.wheres), "Named arguments should be in WHERE clause");
+			loc.args = [45, "BBB", [1,2,3]];
+			assertEquals(loc.args, loc.instance.sql.whereParameters, "Parameters should be set and in correct order");
 		</cfscript>
 	</cffunction>
 	
@@ -380,7 +387,8 @@
 			loc.pass = false;
 			loc.instance = new();
 			try {
-				loc.instance.having("id = ? OR name = '?'", [2]);
+				loc.args = [2];
+				loc.instance.having("id = ? OR name = '?'", loc.args);
 			} catch (custom_type e) {
 				loc.pass = true;
 			}
@@ -391,9 +399,12 @@
 	<cffunction name="testHavingWithNamedArguments" returntype="void" access="public">
 		<cfscript>
 			var loc = {};
-			loc.instance = new().having(a=45, b="BBB", c=[1,2,3]);
-			assertEquals(["a = ?", "b = ?", "c IN (?)"], visit(loc.instance.sql.havings), "Named arguments should be in HAVING clause");
-			assertEquals([45, "BBB", [1,2,3]], loc.instance.sql.havingParameters, "Parameters should be set and in correct order");
+			loc.args = [1,2,3];
+			loc.instance = new().having(a=45, b="BBB", c=loc.args);
+			loc.args = ["a = ?", "b = ?", "c IN (?)"];
+			assertEquals(loc.args, visit(loc.instance.sql.havings), "Named arguments should be in HAVING clause");
+			loc.args = [45, "BBB", [1,2,3]];
+			assertEquals(loc.args, loc.instance.sql.havingParameters, "Parameters should be set and in correct order");
 		</cfscript>
 	</cffunction>
 	

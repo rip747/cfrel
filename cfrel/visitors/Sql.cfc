@@ -163,7 +163,11 @@
 			var loc = {};
 			
 			// read alias unless we have them turned off
-			loc.alias = NOT variables.aliasOff AND Len(obj.alias) ? " AS #obj.alias#" : "";
+			loc.alias = "";
+			if (NOT variables.aliasOff AND Len(obj.alias))
+			{
+				loc.alias = " AS #obj.alias#";
+			}
 			
 			// only use alias if we have asked to do so
 			if (variables.aliasOnly AND Len(loc.alias))
@@ -173,7 +177,11 @@
 				return visit(obj.mapping.value) & loc.alias;
 			
 			// read table specified for column
-			loc.table = Len(obj.table) ? obj.table & "." : "";
+			loc.table = "";
+			if (Len(obj.table))
+			{
+				loc.table = obj.table;
+			}
 			
 			return loc.table & obj.column & loc.alias;
 		</cfscript>
@@ -183,7 +191,11 @@
 		<cfargument name="obj" type="any" required="true" />
 		<cfscript>
 			var loc = {};
-			loc.join = (obj.type EQ "outer") ? "LEFT JOIN " : "JOIN ";
+			loc.join = "JOIN ";
+			if (obj.type EQ "outer")
+			{
+				loc.join = "LEFT JOIN ";
+			}
 			loc.join &= visit(obj.table);
 			if (IsStruct(obj.condition) OR obj.condition EQ false)
 				loc.join &= " ON #visit(obj.condition)#";
@@ -211,7 +223,10 @@
 	
 	<cffunction name="visit_nodes_order" returntype="string" access="private">
 		<cfargument name="obj" type="any" required="true" />
-		<cfreturn obj.descending ? "#visit(obj.subject)# DESC" : "#visit(obj.subject)# ASC" />
+		<cfif obj.descending>
+			<cfreturn "#visit(obj.subject)# DESC" />
+		</cfif>
+		<cfreturn "#visit(obj.subject)# ASC" />
 	</cffunction>
 	
 	<cffunction name="visit_nodes_paren" returntype="string" access="private">
@@ -263,8 +278,10 @@
 		<cfscript>
 			if (NOT variables.aliasOff AND StructKeyExists(obj, "mapping") AND Len(obj.mapping))
 				return obj.mapping;
+			else if (obj.subject NEQ "")
+				return "#visit(obj.subject)#.*";
 			else
-				return obj.subject NEQ "" ? "#visit(obj.subject)#.*" : "*";
+				return "*";
 		</cfscript>
 	</cffunction>
 	

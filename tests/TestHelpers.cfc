@@ -39,9 +39,9 @@
 	
 	<cffunction name="testTypeOf" returntype="void" access="public">
 		<cfscript>
-			assertEquals("array", typeOf([]));
+			assertEquals("array", typeOf(ArrayNew(1)));
 			assertEquals("query", typeOf(QueryNew('')));
-			assertEquals("struct", typeOf({}));
+			assertEquals("struct", typeOf(StructNew()));
 			assertEquals("binary", typeOf(ToBinary(ToBase64("1234"))));
 			assertEquals("function", typeOf(sqlLiteral));
 			assertEquals("cfrel.nodes.Literal", typeOf(sqlLiteral("SELECT a FROM b")));

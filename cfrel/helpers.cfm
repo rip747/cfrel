@@ -41,8 +41,13 @@
 				
 		// some will just be structs, but nodes will have $class set
 		else if (IsStruct(arguments.obj))
-			return StructKeyExists(arguments.obj, "$class") ? arguments.obj.$class : "struct";
-			
+		{
+			if (StructKeyExists(arguments.obj, "$class"))
+			{
+				return arguments.obj.$class; 
+			}
+			return "struct";
+		}	
 		// everything else is a simple value
 		else
 			return "simple";

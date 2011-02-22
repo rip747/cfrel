@@ -15,10 +15,12 @@
 			
 			// build a variety of queries
 			loc.rel1 = loc.factory.new().select("1 + 2", 3, 4).distinct();
-			loc.rel2 = loc.factory.new().select("a, SUM(b)").from("example").group("a").having("SUM(b) > ?", [0]);
+			loc.args = [0];
+			loc.rel2 = loc.factory.new().select("a, SUM(b)").from("example").group("a").having("SUM(b) > ?", loc.args);
 			loc.rel3 = loc.factory.new().from("example").where("c > 5 OR c < 2").where(a=5).order("c ASC");
 			loc.rel4 = loc.factory.new().from("example").order("a DESC").paginate(7, 10);
-			loc.rel5 = loc.factory.new().from(loc.rel4).where("b > ?", [10]);
+			loc.args = [10];
+			loc.rel5 = loc.factory.new().from(loc.rel4).where("b > ?", loc.args);
 			loc.rel6 = loc.factory.new().from(QueryNew(''));
 			
 			// set expected values

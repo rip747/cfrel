@@ -17,10 +17,9 @@
 			loc.method = "visit_#loc.type#";
 			if (NOT StructKeyExists(variables, loc.method))
 				throwException("No visitor exists for type: #loc.type#");
-			
-			// call visit_xxx_yyy method
-			var method = variables[loc.method];
-			return method(argumentCollection=arguments);
 		</cfscript>
+		<!--- call visit_xxx_yyy method --->
+		<cfinvoke method="#loc.method#" argumentcollection="#arguments#" returnvariable="loc.ret">
+		<cfreturn loc.ret>
 	</cffunction>
 </cfcomponent>

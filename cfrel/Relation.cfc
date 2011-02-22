@@ -168,13 +168,13 @@
 	<cffunction name="join" returntype="struct" access="public" hint="Add a JOIN to the relation">
 		<cfargument name="target" type="any" required="true" />
 		<cfargument name="condition" type="any" default="false" />
-		<cfargument name="params" type="array" default="#[]#" />
+		<cfargument name="params" type="array" default="#ArrayNew(1)#" />
 		<cfargument name="type" type="string" default="inner" hint="INNER or OUTER join" />
 		<cfscript>
 			var loc = {};
 			if (variables.executed)
 				return this.clone().join(argumentCollection=arguments);
-				
+	
 			// correctly set condition of join
 			if (typeOf(arguments.condition) NEQ "simple") {
 				loc.condition = arguments.condition;
@@ -184,7 +184,7 @@
 			} else {
 				loc.condition = false;
 			}
-				
+			
 			// create table object
 			switch(typeOf(arguments.target)) {
 				
@@ -228,7 +228,7 @@
 				for (loc.i = 1; loc.i LTE loc.iEnd; loc.i++)
 					ArrayAppend(this.sql.joinParameterColumns, loc.parameterColumns[loc.i]);
 			}
-				
+
 			return this;
 		</cfscript>
 	</cffunction>
@@ -545,7 +545,7 @@
 	</cffunction>
 	
 	<cffunction name="getModels" returntype="array" access="public" hint="Return array of all models involved in query">
-		<cfargument name="stack" type="array" default="#[]#" />
+		<cfargument name="stack" type="array" default="#ArrayNew(1)#" />
 		<cfscript>
 			var loc = {};
 			
@@ -569,7 +569,7 @@
 	</cffunction>
 	
 	<cffunction name="getParameters" returntype="array" access="public" hint="Return array of all parameters used in query and subqueries">
-		<cfargument name="stack" type="array" default="#[]#" />
+		<cfargument name="stack" type="array" default="#ArrayNew(1)#" />
 		<cfscript>
 			var loc = {};
 				
@@ -597,7 +597,7 @@
 	</cffunction>
 	
 	<cffunction name="getParameterColumns" returntype="array" access="public" hint="Return array of all columns referenced by parameters">
-		<cfargument name="stack" type="array" default="#[]#" />
+		<cfargument name="stack" type="array" default="#ArrayNew(1)#" />
 		<cfscript>
 			var loc = {};
 				
