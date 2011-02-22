@@ -102,7 +102,7 @@
 			if (variables.executed)
 				return this.clone().distinct(argumentCollection=arguments);
 				
-			if (NOT ArrayFind(this.sql.selectFlags, "DISTINCT"))
+			if (NOT $ArrayFind(this.sql.selectFlags, "DISTINCT"))
 				ArrayAppend(this.sql.selectFlags, "DISTINCT");
 			return this;
 		</cfscript>
@@ -459,7 +459,7 @@
 				} else {
 					
 					// create the new query object
-					loc.query = new query();
+					loc.query = _createQueryObject();
 					
 					// generate SQL for query
 					loc.sql = this.toSql();
@@ -499,7 +499,11 @@
 							loc.paramType = this.mapper.columnDataType(loc.parameterColumns[loc.i]);
 						
 						// add parameter, converting to list if necessary
-						loc.paramValue = loc.paramIsList ? ArrayToList(loc.parameters[loc.i], Chr(7)) : loc.parameters[loc.i];
+						loc.paramValue = loc.parameters[loc.i];
+						if (loc.paramIsList)
+						{
+							loc.paramValue = ArrayToList(loc.parameters[loc.i], Chr(7));
+						}
 						loc.query.addParam(value=loc.paramValue, cfsqltype=loc.paramType, list=loc.paramIsList, null=loc.paramIsNull, separator=Chr(7));
 					}
 						
@@ -823,5 +827,12 @@
 			// return default type if no column match
 			return "cf_sql_char";
 		</cfscript>
+	</cffunction>
+
+	<cffunction name="_createQueryObject" returntype="Any" access="private" hint="return a query object based on the CFML engine">
+		<cfif StructKeyExists(server, "coldfusion") AND ListFirst(server.coldfusion.productversion) eq 8>
+			<cfreturn createobject("component", "QueryFacade")>
+		</cfif>
+		<cfreturn createobject("component", "query")>
 	</cffunction>
 </cfcomponent>

@@ -71,3 +71,39 @@
 	</cfscript>
 	<cfreturn arguments.path />
 </cffunction>
+
+<cffunction name="$arrayFind" returntype="boolean" access="public">
+	<cfargument name="thearray" type="array" required="true">
+	<cfargument name="value" type="string" required="true">
+	<cfif ListFind(ArrayToList(arguments.thearray, chr(7)), arguments.value, chr(7))>
+		<cfreturn true>
+	</cfif>
+	<cfreturn false>
+</cffunction>
+
+<cffunction name="$arrayFindNoCase" returntype="boolean" access="public">
+	<cfargument name="thearray" type="array" required="true">
+	<cfargument name="value" type="string" required="true">
+	<cfif ListFindNoCase(ArrayToList(arguments.thearray, chr(7)), arguments.value, chr(7))>
+		<cfreturn true>
+	</cfif>
+	<cfreturn false>
+</cffunction>
+
+<cffunction name="$arrayContains" returntype="boolean" access="public">
+	<cfargument name="thearray" type="array" required="true">
+	<cfargument name="value" type="string" required="true">
+	<cfif ListContains(ArrayToList(arguments.thearray, chr(7)), arguments.value, chr(7))>
+		<cfreturn true>
+	</cfif>
+	<cfreturn false>
+</cffunction>
+
+<cffunction name="$arrayContainsNoCase" returntype="boolean" access="public">
+	<cfargument name="thearray" type="array" required="true">
+	<cfargument name="value" type="string" required="true">
+	<cfif ListContainsNoCase(ArrayToList(arguments.thearray, chr(7)), arguments.value, chr(7))>
+		<cfreturn true>
+	</cfif>
+	<cfreturn false>
+</cffunction>

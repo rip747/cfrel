@@ -66,7 +66,10 @@
 					
 			// if key already used, try prepending a prefix
 			if (StructKeyExists(arguments.scope, loc.key) AND Len(arguments.prefix))
-				loc.key = arguments.key = arguments.prefix & arguments.key;
+			{
+				arguments.key = arguments.prefix & arguments.key;
+				loc.key = arguments.key;
+			}
 				
 			// if key still conflicts, start appending numbers
 			for (loc.j = 2; StructKeyExists(arguments.scope, loc.key); loc.j++)

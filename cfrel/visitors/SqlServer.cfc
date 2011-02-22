@@ -27,7 +27,7 @@
 						throwException("ORDER BY clause is required for pagination");
 					
 					// force a GROUP BY if trying to get DISTINCT rows in subquery
-					if (ArrayContains(obj.sql.selectFlags, "DISTINCT") AND ArrayLen(obj.sql.groups) EQ 0)
+					if ($ArrayContains(obj.sql.selectFlags, "DISTINCT") AND ArrayLen(obj.sql.groups) EQ 0)
 						obj.sql.groups = Duplicate(obj.sql.select);
 					
 					// create new SELECT item from inner query

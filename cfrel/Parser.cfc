@@ -120,7 +120,7 @@
 		<cfscript>
 			if (NOT peek(t.rparen))
 				return exprs();
-			return [];
+			return ArrayNew(1);
 		</cfscript>
 	</cffunction>
 	
