@@ -84,6 +84,7 @@
 			var instance = datasourceRel.clone().exec();
 			var key = "";
 			var loc = {};
+			var havingArgs = "";
 			
 			// call each of the basic chainable methods
 			loc.select = instance.select("a");
@@ -91,13 +92,12 @@
 			loc.from = instance.from("users");
 			loc.join = instance.join("posts", "post_user_id = user_id");
 			loc.group = instance.group("a");
-			loc.havingArgs = [0];
-			loc.having = instance.having("a > ?", loc.havingArgs);
+			havingArgs = [0];
+			loc.having = instance.having("a > ?", havingArgs);
 			loc.order = instance.order("a ASC");
 			loc.limit = instance.limit(5);
 			loc.offset = instance.offset(10);
 			loc.paginate = instance.paginate(1, 5);
-			
 			// assert that each return is not the original object and has an empty query
 			for (key in loc) {
 				injectInspector(loc[key]);
@@ -112,6 +112,7 @@
 			var instance = new();
 			var key = "";
 			var loc = {};
+			var havingArgs = "";
 			
 			// call each of the basic chainable methods
 			loc.select = instance.select("a");
@@ -120,8 +121,8 @@
 			loc.join = instance.join("posts", "post_user_id = user_id");
 			loc.where = instance.where(a=5);
 			loc.group = instance.group("a");
-			loc.havingArgs = [0];
-			loc.having = instance.having("a > ?", loc.havingArgs);
+			havingArgs = [0];
+			loc.having = instance.having("a > ?", havingArgs);
 			loc.order = instance.order("a ASC");
 			loc.limit = instance.limit(5);
 			loc.offset = instance.offset(10);
