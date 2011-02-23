@@ -300,7 +300,7 @@
 			var loc = {};
 			loc.args = [1,2,3];
 			loc.instance = new().where(a=45, b="BBB", c=loc.args);
-			loc.ags = ["a = ?", "b = ?", "c IN (?)"];
+			loc.args = ["a = ?", "b = ?", "c IN (?)"];
 			assertEquals(loc.args, visit(loc.instance.sql.wheres), "Named arguments should be in WHERE clause");
 			loc.args = [45, "BBB", [1,2,3]];
 			assertEquals(loc.args, loc.instance.sql.whereParameters, "Parameters should be set and in correct order");
